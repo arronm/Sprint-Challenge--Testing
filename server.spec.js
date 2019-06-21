@@ -71,6 +71,28 @@ describe('server', () => {
       expect(request.body.length).toBe(1);
     });
 
+    it('should correctly handle duplicate titles with status 405', async () => {
+      await supertest(server)
+        .post(endpoint)
+        .send({
+          title: 'a',
+          genre: 'a',
+          releaseYear: 1999,
+        })
+        .expect(201);
+
+      const request = await supertest(server)
+        .post(endpoint)
+        .send({
+          title: 'a',
+          genre: 'a',
+          releaseYear: 1999,
+        })
+        .expect(405);
+      
+      expect(request.body).toEqual({ message: "Provided title must be unique, the title: `a` already exists in the database" });
+    })
+
     it('should correctly handle missing genre with status 422', async () => {
       const request = await supertest(server)
         .post(endpoint)

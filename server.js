@@ -48,7 +48,10 @@ server.post('/games', validateBody(bodyShape), async (req, res) => {
     const game = await db.add(req.body);
     res.status(201).json(game);
   } catch (error) {
-    res.status(500).json(errorRef(error));
+    if (error.message.match(/unique constraint failed/i)) {
+      return res.status(405).json({ message: `Provided title must be unique, the title: \`${req.body.title}\` already exists in the database` });
+    }
+    return res.status(500).json(errorRef(error));
   }
 });
 
