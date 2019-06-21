@@ -130,6 +130,18 @@ describe('server', () => {
         .expect(422);
         expect(request.body).toEqual({ message: "Expected type for (title) to be string, but instead saw number" });
     });
+
+    it('should correctly handle wrong `releaseYear` type with status 422', async () => {
+      const request = await supertest(server)
+        .post(endpoint)
+        .send({
+          title: 'a',
+          genre: 'a',
+          releaseYear: '2913',
+        })
+        .expect(422);
+        expect(request.body).toEqual({ message: "Expected type for (releaseYear) to be number, but instead saw string" });
+    });
   });
 
   describe('GET /games/:id', () => {
