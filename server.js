@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const db = require('./data/models');
 const errorRef = require('./utils/errorRef');
 const validateBody = require('./middleware/validateBody');
+const validateId = require('./middleware/validateId');
 
 const middleware = [
   express.json(),
@@ -53,6 +54,10 @@ server.post('/games', validateBody(bodyShape), async (req, res) => {
     }
     return res.status(500).json(errorRef(error));
   }
+});
+
+server.get('/games/:id', validateId(db), async (req, res) => {
+  res.json(req.resource);
 });
 
 module.exports = server;

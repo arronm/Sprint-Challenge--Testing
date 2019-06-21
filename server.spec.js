@@ -131,4 +131,35 @@ describe('server', () => {
         expect(request.body).toEqual({ message: "Expected type for (title) to be string, but instead saw number" });
     });
   });
+
+  describe('GET /games/:id', () => {
+    it('should correctly get a game with an existing id', async () => {
+      const game = {
+        title: 'Cyberpunk 2077',
+        genre: 'action',
+        releaseYear: 2077
+      };
+
+      await supertest(server)
+        .post('/games')
+        .send(game)
+        .expect(201);
+      
+      const request = await supertest(server)
+        .get('/games/1')
+        .expect(200);
+      
+      expect(request.body).toEqual({
+        ...game,
+        id: 1,
+      });
+    });
+
+    it('should correctly handle when the requested id does not exist', async () => {
+      const request = await supertest(server)
+        .get('/games/1')
+        .expect(404);
+      expect(request.body).toEqual({ message: "Could not find a resource with an id of (1)" });
+    });
+  })
 });
