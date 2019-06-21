@@ -24,5 +24,26 @@ describe('server', () => {
         .get('/');
       expect(res.body).toEqual({ message: "API is running, better go catch it!" });
     });
+  });
+
+  describe('GET /games', () => {
+    it('should respond with 200 OK', async () => {
+      await supertest(server)
+        .get('/games')
+        .expect(200);
+    });
+
+    it('should respond with json content', async () => {
+      await supertest(server)
+        .get('/games')
+        .expect('Content-Type', /json/i);
+    });
+
+    it('should respond with an empty object', async () => {
+      const request = await supertest(server)
+        .get('/games')
+        .expect(200);
+      expect(request.body.length).toBe(0);
+    });
   })
 });
