@@ -8,6 +8,10 @@
 		"server": "nodemon index.js",
 		"start": "node index.js"
 	},
+	"jest": {
+		"testRunner": "jest-circus/runner",
+		"testEnvironment": "node"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/LambdaSchool/Sprint-Challenge--Testing.git"

@@ -82,6 +82,6 @@ The following exercises are optional, but we suggest that you tackle them if you
   - [x] Write a `GET /games/:id` endpoint that returns the information about a single game. Respond with a 404 status code when a game is not found for the provided `id`. Add the corresponding tests for it.
   - [x] Add a `DELETE /games/:id` endpoint that can remove the corresponding game. If the game does not exist return a 404 status code. Write tests for this endpoint.
 - [x] Add a `PUT /games/:id` endpoint that can edit the corresponding game. If the game does not exist return a 404 status code. Write tests for this endpoint.
-- [ ] Deploy to Heroku
+- [x] Deploy to Heroku
 
 **Remember you can use any resources you want to solve these problems, but avoid copying/pasting solutions you've previously written. Also if you don't finish all of the challenges, that's fine! Just do what you can and submit your challenges in the end! HAVE FUN!**
