@@ -49,7 +49,7 @@ describe('server', () => {
 
   describe('POST /games', () => {
     const endpoint = '/games';
-    it('should correctly insert a new user with status 201', async () => {
+    it('should correctly insert a new game with status 201', async () => {
       const game = {
         title: 'Cyberpunk 2077',
         genre: 'action',
@@ -161,5 +161,43 @@ describe('server', () => {
         .expect(404);
       expect(request.body).toEqual({ message: "Could not find a resource with an id of (1)" });
     });
-  })
+  });
+
+  describe('DELETE /games', () => {
+    const endpoint = '/games';
+    it('should correctly delete a game with the given an existing id', async () => {
+      const game = {
+        title: 'Cyberpunk 2077',
+        genre: 'action',
+        releaseYear: 2077
+      };
+
+      await supertest(server)
+        .post(endpoint)
+        .send(game)
+        .expect(201);
+
+      request = await supertest(server)
+        .del(`${endpoint}/1`)
+        .expect(200);
+      
+      expect(request.body).toEqual({
+        ...game,
+        id: 1,
+      });
+
+      request = await supertest(server)
+        .get(endpoint)
+        .expect(200);
+      
+      expect(request.body.length).toBe(0);
+    });
+
+    it('should correctly handle when an id does not exist', async () => {
+      const request = await supertest(server)
+        .del(`${endpoint}/1`)
+        .expect(404);
+      expect(request.body).toEqual({ message: "Could not find a resource with an id of (1)" });
+    });
+  });
 });
