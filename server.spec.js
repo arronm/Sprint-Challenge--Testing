@@ -200,4 +200,41 @@ describe('server', () => {
       expect(request.body).toEqual({ message: "Could not find a resource with an id of (1)" });
     });
   });
+
+  describe('PUT /games/:id', () => {
+    const endpoint = '/games';
+    it('should modify an existing game', async () => {
+      const game = {
+        title: 'Cyberpunk 2077',
+        genre: 'action',
+        releaseYear: 2077
+      };
+
+      await supertest(server)
+        .post(endpoint)
+        .send(game)
+        .expect(201);
+
+      const request = await supertest(server)
+        .put(`${endpoint}/1`)
+        .send({
+          ...game,
+          genre: 'adventure',
+        })
+        .expect(200);
+
+      expect(request.body).toEqual({
+        ...game,
+        genre: 'adventure',
+        id: 1,
+      });
+    });
+
+    it('should correctly handle when an id does not exist', async () => {
+      const request = await supertest(server)
+        .del(`${endpoint}/1`)
+        .expect(404);
+      expect(request.body).toEqual({ message: "Could not find a resource with an id of (1)" });
+    });
+  });
 });

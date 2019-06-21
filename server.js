@@ -69,4 +69,16 @@ server.delete('/games/:id', validateId(db), async (req, res) => {
   }
 });
 
+server.put('/games/:id', validateId(db), async (req, res) => {
+  try {
+    const game = await db.update(req.resource.id, {
+      ...req.resource,
+      ...req.body,
+    });
+    res.json(game);
+  } catch (error) {
+    res.status(500).json(errorRef(error));
+  }
+});
+
 module.exports = server;
