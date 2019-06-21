@@ -71,41 +71,41 @@ describe('server', () => {
       expect(request.body.length).toBe(1);
     });
 
-    it('should correctly handle missing genre with status 400', async () => {
+    it('should correctly handle missing genre with status 422', async () => {
       const request = await supertest(server)
         .post(endpoint)
         .send({ title: 'b' })
-        .expect(400);
+        .expect(422);
       expect(request.body).toEqual({ message: "Missing required field (genre)" });
     });
 
-    it('should correctly handle missing title with status 400', async () => {
+    it('should correctly handle missing title with status 422', async () => {
       const request = await supertest(server)
         .post(endpoint)
         .send({ genre: 'b' })
-        .expect(400);
+        .expect(422);
       expect(request.body).toEqual({ message: "Missing required field (title)" });
     });
 
-    it('should correctly handle wrong `genre` type with status 400', async () => {
+    it('should correctly handle wrong `genre` type with status 422', async () => {
       const request = await supertest(server)
         .post(endpoint)
         .send({
           title: 'b',
           genre: 1,
         })
-        .expect(400);
+        .expect(422);
         expect(request.body).toEqual({ message: "Expected type for (genre) to be string, but instead saw number" });
     });
 
-    it('should correctly handle wrong `title` type with status 400', async () => {
+    it('should correctly handle wrong `title` type with status 422', async () => {
       const request = await supertest(server)
         .post(endpoint)
         .send({
           title: 1,
           genre: 'a',
         })
-        .expect(400);
+        .expect(422);
         expect(request.body).toEqual({ message: "Expected type for (title) to be string, but instead saw number" });
     });
   });
